@@ -28,7 +28,14 @@
     "scripts": {
         "test": "phpunit",
         "lint": "phpcs --standard=.phpcs.xml src/",
-        "analyse": "phpstan analyse src/"
+        "analyse": "phpstan analyse src/",
+        "post-install-cmd": [
+            "cp -r 'hooks/' '.git/hooks/'",
+            "php -r \"copy('hooks/pre-commit', '.git/hooks/pre-commit');\"",
+            "php -r \"copy('hooks/pre-push', '.git/hooks/commit-msg');\"",
+            "php -r \"chmod('.git/hooks/pre-commit', 0777);\"",
+            "php -r \"chmod('.git/hooks/pre-push', 0777);\""
+        ]
     },
     "config": {
         "allow-plugins": {

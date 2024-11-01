@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Run PHPCBF to automatically fix fixable issues
+vendor/bin/phpcbf --standard=.phpcs.xml src/
+if [ $? -ne 0 ]; then
+  echo "PHPCBF fixed some issues."
+fi
+
+# Run PHP CodeSniffer
+vendor/bin/phpcs --standard=.phpcs.xml src/
+if [ $? -ne 0 ]; then
+  echo "PHP CodeSniffer found issues. Commit aborted."
+  exit 1
+fi
+
+# Run PHPStan
+vendor/bin/phpstan analyse src/
+if [ $? -ne 0 ]; then
+  echo "PHPStan found issues. Commit aborted."
+  exit 1
+fi
+
+echo "All checks passed. Proceeding with commit."
+exit 0

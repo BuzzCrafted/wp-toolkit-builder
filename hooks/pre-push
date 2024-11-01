@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Run PHPUnit tests
+vendor/bin/phpunit
+if [ $? -ne 0 ]; then
+  echo "PHPUnit tests failed. Push aborted."
+  exit 1
+fi
+
+# Run PHP CodeSniffer
+vendor/bin/phpcs --standard=.phpcs.xml src/
+if [ $? -ne 0 ]; then
+  echo "PHP CodeSniffer found issues. Push aborted."
+  exit 1
+fi
+
+# Run PHPStan
+vendor/bin/phpstan analyse src/
+if [ $? -ne 0 ]; then
+  echo "PHPStan found issues. Push aborted."
+  exit 1
+fi
+
+echo "All checks passed. Proceeding with push."
+exit 0
