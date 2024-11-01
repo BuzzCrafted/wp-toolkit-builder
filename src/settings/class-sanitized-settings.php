@@ -45,7 +45,7 @@ class Sanitized_Settings implements Settings_Interface {
 	/**
 	 * Storage for validated data.
 	 *
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	private array $data_storage = array();
 
@@ -91,7 +91,7 @@ class Sanitized_Settings implements Settings_Interface {
 	 * Returns all sanitized settings as an associative array.
 	 *
 	 * @since 1.0.0
-	 * @return array The array of sanitized settings.
+	 * @return array<string, mixed> The array of sanitized settings.
 	 */
 	public function get_raw_data(): array {
 		return $this->data_storage;
@@ -124,20 +124,21 @@ class Sanitized_Settings implements Settings_Interface {
 	 * @return bool True if the setting has support for the option, false otherwise.
 	 */
 	public function has_support( string $setting, string $option ): bool {
-		return isset( $this->data_storage[ $setting ] ) && ! empty( $this->data_storage[ $setting ][ $option ] );
+		$settings = $this->get_settings();
+
+		return isset( $settings[ $setting ] ) && is_array( $settings[ $setting ] ) && ! empty( $settings[ $setting ][ $option ] );
 	}
 
 	/**
-	 * Retrieve the entire settings data for a specific setting.
+	 * Retrieve all settings.
 	 *
-	 * Returns an associative array representing the setting, or an empty array if the setting is not found.
+	 * Returns an array containing all settings and their values.
 	 *
 	 * @since 1.0.0
-	 * @param string $setting The name of the setting.
-	 * @return array The data of the specified setting, or an empty array if not found.
+	 * @return array<string, mixed> Associative array of settings.
 	 */
-	public function get_settings( string $setting ): array {
-		return $this->data_storage[ $setting ] ?? array();
+	public function get_settings(): array {
+		return isset( $this->data_storage['settings'] ) && is_array( $this->data_storage['settings'] ) ? $this->data_storage['settings'] : array();
 	}
 
 	/**
@@ -151,6 +152,7 @@ class Sanitized_Settings implements Settings_Interface {
 	 * @return mixed The value of the option, or false if not found.
 	 */
 	public function get_option( string $setting, string $option ): mixed {
-		return $this->has_support( $setting, $option ) ? $this->data_storage[ $setting ][ $option ] : false;
+		$settings = $this->get_settings();
+		return $this->has_support( $setting, $option ) && is_array( $settings[ $setting ] ) ? $settings[ $setting ][ $option ] : false;
 	}
 }

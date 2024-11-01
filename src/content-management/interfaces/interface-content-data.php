@@ -1,28 +1,24 @@
 <?php
 /**
- * Content_Data_Interface
+ * File name: interface-content-data.php
  *
- * Defines methods for retrieving theme or plugin data such as subscribers and shortcodes.
+ * Provides an interface for content data management.
  *
  * @package    Bdev
  * @subpackage ContentManagement
  * @since      1.0.0
  * @version    1.0.0
  * @license    GPL-2.0-or-later
- * @author     BuzzDeveloper
+ * @link       https://buzzdeveloper.net
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
+ * @copyright  2024
  */
 
 namespace Bdev\ContentManagement\Interfaces;
 
-/**
- * Interface Content_Data_Interface
- *
- * Provides methods for accessing different types of content data.
- * Classes implementing this interface should handle data retrieval,
- * focusing on specific types of data like subscribers and shortcodes.
- *
- * @since 1.0.0
- */
+use Bdev\EventManagement\Interfaces\Subscriber_Interface;
+use Bdev\Shortcodes\Interfaces\Shortcode_Interface;
+
 interface Content_Data_Interface {
 
 	/**
@@ -32,7 +28,7 @@ interface Content_Data_Interface {
 	 * associated with the theme or plugin.
 	 *
 	 * @since 1.0.0
-	 * @return array Array of subscribers.
+	 * @return array<int, Subscriber_Interface> Array of subscribers.
 	 */
 	public function get_subscribers(): array;
 
@@ -43,7 +39,7 @@ interface Content_Data_Interface {
 	 * the theme or plugin.
 	 *
 	 * @since 1.0.0
-	 * @return array Array of shortcodes.
+	 * @return array<int, Shortcode_Interface> Array of shortcodes.
 	 */
 	public function get_shortcodes(): array;
 }

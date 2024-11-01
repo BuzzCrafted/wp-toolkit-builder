@@ -2,23 +2,25 @@
 /**
  * File name: class-theme-content-provider.php
  *
- * Provides functionality for managing theme configurations and content.
+ * Provides functionality for theme content management.
  *
- * @packageBdev
+ * @package    Bdev
  * @subpackage ContentManagement
- * @since 1.0.0
- * @version 1.0.0
- * @license GPL-2.0-or-later
- * @author  BuzzDeveloper
- * @link    https://buzzdeveloper.net
+ * @since      1.0.0
+ * @version    1.0.0
+ * @license    GPL-2.0-or-later
+ * @link       https://buzzdeveloper.net
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
+ * @copyright  2024
  */
 
 namespace Bdev\ContentManagement;
 
 use Bdev\ContentManagement\Interfaces\Content_Data_Interface;
-use Bdev\EventManagement\SubscriberInterface;
 use Bdev\ContentManagement\Subscriber_Registry;
 use Bdev\ContentManagement\Shortcode_Registry;
+use Bdev\EventManagement\Interfaces\Subscriber_Interface;
+use Bdev\Shortcodes\Interfaces\Shortcode_Interface;
 
 /**
  * Class Theme_Content_Provider
@@ -60,21 +62,21 @@ class Theme_Content_Provider implements Content_Data_Interface {
 	/**
 	 * Theme subscribers array.
 	 *
-	 * @var array
+	 * @var array<string, array<string, Subscriber_Interface>>
 	 */
 	private array $theme_subscribers = array();
 
 	/**
 	 * Theme shortcodes array.
 	 *
-	 * @var array
+	 * @var array<string, array<string, Shortcode_Interface>>
 	 */
 	private array $theme_shortcodes = array();
 
 	/**
 	 * Default settings for the theme configuration.
 	 *
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	private array $default_settings = array();
 
@@ -83,9 +85,9 @@ class Theme_Content_Provider implements Content_Data_Interface {
 	 *
 	 * Initializes the registries with given subscribers, shortcodes, and default settings.
 	 *
-	 * @param array $theme_subscribers List of theme subscribers.
-	 * @param array $theme_shortcodes  List of theme shortcodes.
-	 * @param array $default_settings  Default settings for theme configuration.
+	 * @param array<string, array<string, Subscriber_Interface>> $theme_subscribers List of theme subscribers.
+	 * @param array<string, array<string, Shortcode_Interface>>  $theme_shortcodes  List of theme shortcodes.
+	 * @param array<string, mixed>                               $default_settings  Default settings for theme configuration.
 	 */
 	public function __construct( array $theme_subscribers, array $theme_shortcodes, array $default_settings ) {
 		$this->theme_subscribers   = $theme_subscribers;
@@ -116,7 +118,7 @@ class Theme_Content_Provider implements Content_Data_Interface {
 
 		$settings = $theme_settings_manager->load_settings( $file_path, $ruleset );
 		$this->subscriber_registry->register_subscribers( $this->theme_subscribers, $settings );
-		$this->shortcode_registry->register_shortcodes( $this->theme_subscribers, $settings );
+		$this->shortcode_registry->register_shortcodes( $this->theme_shortcodes, $settings );
 
 		$this->is_loaded = true;
 	}
@@ -143,7 +145,7 @@ class Theme_Content_Provider implements Content_Data_Interface {
 	 * Ensures configuration is loaded before retrieving subscribers.
 	 *
 	 * @since 1.0.0
-	 * @return SubscriberInterface[] Array of subscribers.
+	 * @return Subscriber_Interface[] Array of subscribers.
 	 */
 	public function get_subscribers(): array {
 		if ( ! $this->is_loaded ) {
@@ -158,7 +160,7 @@ class Theme_Content_Provider implements Content_Data_Interface {
 	 * Ensures configuration is loaded before retrieving shortcodes.
 	 *
 	 * @since 1.0.0
-	 * @return array Array of shortcodes.
+	 * @return Shortcode_Interface[] Array of shortcodes.
 	 */
 	public function get_shortcodes(): array {
 		if ( ! $this->is_loaded ) {

@@ -16,6 +16,9 @@ namespace Bdev\AssetManagement\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Bdev\AssetManagement\Asset_Meta;
+use Mockery;
+use Brain\Monkey;
+use Brain\Monkey\Functions;
 
 /**
  * Class Asset_Meta_Test
@@ -51,9 +54,25 @@ class AssetMetaTest extends TestCase {
 	 * @return void
 	 */
 	protected function setUp(): void {
+		parent::setUp();
+		Monkey\setUp();
 		// Providing a sample file path to the constructor.
-		$this->sample_file_path = '/path/to/sample/file.php';
+		$this->sample_file_path = 'file.php';
 		$this->asset_meta       = new Asset_Meta( $this->sample_file_path );
+	}
+
+	/**
+	 * Tear down the test environment.
+	 *
+	 * Cleans up after each test.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	protected function tearDown(): void {
+		Monkey\tearDown();
+		Mockery::close();
+		parent::tearDown();
 	}
 
 	/**
@@ -82,7 +101,16 @@ class AssetMetaTest extends TestCase {
 			'dependencies' => array( 'jquery' ),
 			'version'      => '1.0.0',
 		);
-
+		Functions\stubs(
+			[
+				'esc_attr',
+				'esc_html',
+				'__',
+				'_x',
+				'esc_attr__',
+				'esc_html__',
+			]
+		);
 		// Use vfsStream or a similar approach to create a virtual file for testing.
 		file_put_contents( $this->sample_file_path, '<?php return ' . var_export( $expected_assets, true ) . ';' );
 
@@ -98,6 +126,17 @@ class AssetMetaTest extends TestCase {
 	 * @return void
 	 */
 	public function test_get_assets_invalid_file(): void {
+		
+		Functions\stubs(
+			[
+				'esc_attr',
+				'esc_html',
+				'__',
+				'_x',
+				'esc_attr__',
+				'esc_html__',
+			]
+		);
 		// Simulate an invalid file path scenario.
 		$invalid_file_path = '/invalid/path/to/file.php';
 		$this->asset_meta  = new Asset_Meta( $invalid_file_path );

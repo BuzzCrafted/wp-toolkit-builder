@@ -10,7 +10,7 @@
  * @version    1.0.0
  * @license    GPL-2.0-or-later
  * @link       https://buzzdeveloper.net
- * @author     BuzzDeveloper
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
  */
 
 namespace Bdev\Validator;
@@ -39,7 +39,7 @@ class Settings_Validator implements Validator_Interface {
 	 * Ruleset array containing all validation rules.
 	 *
 	 * @since 1.0.0
-	 * @var array
+	 * @var array<int|string, array<string, mixed>|string>
 	 */
 	private array $ruleset;
 
@@ -57,7 +57,7 @@ class Settings_Validator implements Validator_Interface {
 	 * Initializes the validator with a ruleset and validates it.
 	 *
 	 * @since 1.0.0
-	 * @param array $ruleset Array containing the validation rules.
+	 * @param array<int|string, array<string, mixed>|string> $ruleset Array containing the validation rules.
 	 */
 	public function __construct( array $ruleset ) {
 		$this->ruleset = $ruleset;
@@ -78,7 +78,7 @@ class Settings_Validator implements Validator_Interface {
 	 * Retrieve all root-level rules from the ruleset.
 	 *
 	 * @since 1.0.0
-	 * @return array Array of root-level rule names.
+	 * @return array<string> Array of root-level rule names.
 	 */
 	private function get_all_root_rules(): array {
 		$roots = array();
@@ -97,11 +97,11 @@ class Settings_Validator implements Validator_Interface {
 	 * Retrieve all setting rules from the ruleset.
 	 *
 	 * @since 1.0.0
-	 * @return array Array of setting names defined in the ruleset.
+	 * @return array<int, int|string> Array of setting names defined in the ruleset.
 	 */
 	private function get_all_settings_rules(): array {
 		if ( $this->is_ready() && isset( $this->ruleset[ self::SETTINGS_KEY ] ) ) {
-			return array_keys( $this->ruleset[ self::SETTINGS_KEY ] );
+			return array_keys( (array) $this->ruleset[ self::SETTINGS_KEY ] );
 		}
 
 		return array();
@@ -112,13 +112,16 @@ class Settings_Validator implements Validator_Interface {
 	 *
 	 * @since 1.0.0
 	 * @param string $setting_name The name of the setting.
-	 * @return array Array of options defined for the given setting.
+	 * @return array<string, mixed> Array of options defined for the given setting.
 	 */
 	private function get_all_options_rules( string $setting_name ): array {
 		if ( $this->is_ready()
 			&& isset( $this->ruleset[ self::SETTINGS_KEY ] )
 			&& isset( $this->ruleset[ self::SETTINGS_KEY ][ $setting_name ] ) ) {
-			return $this->ruleset[ self::SETTINGS_KEY ][ $setting_name ];
+			return array_map(
+				fn( $option ) => is_string( $option ) ? $option : ( is_scalar( $option ) ? strval( $option ) : '' ),
+				(array) $this->ruleset[ self::SETTINGS_KEY ][ $setting_name ],
+			);
 		}
 
 		return array();
@@ -146,14 +149,11 @@ class Settings_Validator implements Validator_Interface {
 	}
 
 	/**
-	 * Determine if the provided key/value pair is allowed based on the ruleset.
+	 * Checks if the given setting is allowed.
 	 *
-	 * Validates settings and options against the predefined ruleset to determine if they are allowed.
-	 *
-	 * @since 1.0.0
-	 * @param string $name  The name of the key being checked.
-	 * @param mixed  $value The value associated with the key being checked.
-	 * @return bool True if the key/value pair is allowed, false otherwise.
+	 * @param string $name  The name of the setting.
+	 * @param mixed  $value The value of the setting.
+	 * @return bool True if the setting is allowed, false otherwise.
 	 */
 	public function is_allowed( string $name, mixed $value ): bool {
 		if ( ! $this->is_ready() ) {
@@ -161,17 +161,24 @@ class Settings_Validator implements Validator_Interface {
 		}
 
 		if ( self::SETTINGS_KEY === $name ) {
-			foreach ( $value as $setting_name => $settings ) {
-				if ( ! in_array( $setting_name, $this->get_all_settings_rules(), true ) ) {
-					return false;
-				}
-				foreach ( $settings as $setting => $setting_value ) {
-					if ( ! in_array( $setting, $this->get_all_options_rules( $setting_name ), true ) ) {
+			if ( is_array( $value ) ) {
+				foreach ( $value as $setting_name => $settings ) {
+					if ( ! in_array( $setting_name, $this->get_all_settings_rules(), true ) ) {
+						return false;
+					}
+					if ( is_array( $settings ) ) {
+						foreach ( $settings as $setting => $setting_value ) {
+							if ( ! in_array( $setting, $this->get_all_options_rules( $setting_name ), true ) ) {
+								return false;
+							}
+						}
+					} else {
 						return false;
 					}
 				}
+			} else {
+				return false;
 			}
-		} else {
 			return in_array( $name, $this->get_all_root_rules(), true );
 		}
 

@@ -4,7 +4,7 @@
  *
  * Provides functionality for theme, assets, and event management.
  *
- * @packageBdev
+ * @package   Bdev
  * @subpackage Various
  * @since 1.0.0
  * @version 1.0.0

@@ -4,7 +4,7 @@
  *
  * Provides functionality for managing theme configurations and content.
  *
- * @packageBdev
+ * @package   Bdev
  * @subpackage ContentManagement
  * @since 1.0.0
  * @version 1.0.0
@@ -17,10 +17,9 @@ namespace Bdev\ContentManagement;
 
 use Bdev\AssetManagement\Asset_Path;
 use Bdev\AssetManagement\Default_Asset_Loader;
+use Bdev\AssetManagement\Subscriber\Admin\Admin_Assets_Subscriber;
 use Bdev\EventManagement\Interfaces\Subscriber_Interface;
-use Bdev\EventManagement\Interfaces\SubscriberInterface;
 use Bdev\Settings\Sanitized_Settings;
-use Bdev\Subscriber\Admin\Admin_Assets_Subscriber;
 use Bdev\Subscriber\Frontend\Frontend_Assets_Subscriber;
 
 /**
@@ -42,8 +41,8 @@ class Subscriber_Registry {
 	/**
 	 * Registers subscribers based on provided settings.
 	 *
-	 * @param array              $subscribers Associative array of subscriber settings.
-	 * @param Sanitized_Settings $settings    The sanitized settings instance.
+	 * @param array<string, array<string, Subscriber_Interface>> $subscribers Associative array of subscriber settings.
+	 * @param Sanitized_Settings                                 $settings    The sanitized settings instance.
 	 * @return void
 	 */
 	public function register_subscribers( array $subscribers, Sanitized_Settings $settings ): void {
@@ -53,7 +52,8 @@ class Subscriber_Registry {
 					try {
 						$this->add_subscriber( $subscriber );
 					} catch ( \TypeError $th ) {
-						error_log( $th->getMessage() ); // TODO: implement error handling.
+						// TODO: implement error handling.
+						$error = $th->getMessage();
 					}
 				}
 			}
@@ -105,7 +105,7 @@ class Subscriber_Registry {
 	/**
 	 * Retrieves all registered subscribers.
 	 *
-	 * @return SubscriberInterface[] Array of registered subscribers.
+	 * @return Subscriber_Interface[] Array of registered subscribers.
 	 */
 	public function get_subscribers(): array {
 		return $this->subscribers;

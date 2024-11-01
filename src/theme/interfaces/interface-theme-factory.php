@@ -10,7 +10,7 @@
  * @version    1.0.0
  * @license    GPL-2.0-or-later
  * @link       https://buzzdeveloper.net
- * @author     BuzzDeveloper
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
  */
 
 namespace Bdev\Theme\Interfaces;

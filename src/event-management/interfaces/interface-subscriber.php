@@ -4,7 +4,7 @@
  *
  * Provides functionality for theme, assets, and event management.
  *
- * @packageBdev
+ * @package   Bdev
  * @subpackage Various
  * @since 1.0.0
  * @version 1.0.0
@@ -42,7 +42,7 @@ interface Subscriber_Interface {
 	 * ```
 	 *
 	 * @since 1.0.0
-	 * @return array Array of events and their respective callback methods.
+	 * @return array<string, mixed> Array of events and their respective callback methods.
 	 */
 	public static function get_subscribed_events(): array;
 }

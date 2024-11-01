@@ -2,15 +2,16 @@
 /**
  * File name: class-asset-path.php
  *
- * Provides functionality for theme, assets, and event management.
+ * Provides functionality for managing asset paths.
  *
- * @packageBdev
- * @subpackage Various
- * @since 1.0.0
- * @version 1.0.0
- * @license GPL-2.0-or-later
- * @link    https://buzzdeveloper.net
- * @author  BuzzDeveloper
+ * @package    Bdev
+ * @subpackage AssetManagement
+ * @since      1.0.0
+ * @version    1.0.0
+ * @license    GPL-2.0-or-later
+ * @link       https://buzzdeveloper.net
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
+ * @copyright  2024
  */
 
 namespace Bdev\AssetManagement;
@@ -55,15 +56,16 @@ class Asset_Path {
 	 */
 	private string $url_to_asset;
 
+
 	/**
-	 * Constructor
+	 * Asset_Path constructor.
 	 *
-	 * Initializes the asset path instance with essential details for generating file paths and URLs.
+	 * Initializes the Asset_Path object with the provided parameters.
 	 *
-	 * @param string $name          The asset name.
-	 * @param string $base_dir_name The base directory for assets.
-	 * @param string $path_to_asset The root directory path for the asset.
-	 * @param string $url_to_asset  The root URL for the asset.
+	 * @param string $name          The resource name.
+	 * @param string $base_dir_name The base directory name for the assets.
+	 * @param string $path_to_asset Path to the asset root directory.
+	 * @param string $url_to_asset  URL to the asset root directory.
 	 */
 	public function __construct( string $name = 'index', string $base_dir_name = 'assets', string $path_to_asset = '', string $url_to_asset = '' ) {
 		$this->name          = $name;

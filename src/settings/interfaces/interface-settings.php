@@ -4,7 +4,7 @@
  *
  * Provides functionality for theme, assets, and event management.
  *
- * @packageBdev
+ * @package   Bdev
  * @subpackage Various
  * @since 1.0.0
  * @version 1.0.0
@@ -32,7 +32,7 @@ interface Settings_Interface {
 	 * all settings without any modifications or formatting.
 	 *
 	 * @since 1.0.0
-	 * @return array Raw configuration data.
+	 * @return array<string, mixed> Raw configuration data.
 	 */
 	public function get_raw_data(): array;
 
@@ -60,15 +60,13 @@ interface Settings_Interface {
 	public function has_support( string $setting, string $option ): bool;
 
 	/**
-	 * Retrieve settings for a given setting name.
+	 * Retrieve settings section.
 	 *
 	 * Returns an array containing all options and values for a particular setting.
 	 *
-	 * @since 1.0.0
-	 * @param string $setting Setting name.
-	 * @return array Associative array of settings.
+	 * @return array<string, mixed> Associative array of settings.
 	 */
-	public function get_settings( string $setting ): array;
+	public function get_settings(): array;
 
 	/**
 	 * Retrieve a specific option value for a given setting.

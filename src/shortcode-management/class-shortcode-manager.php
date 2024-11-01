@@ -6,7 +6,7 @@
  * the registration, execution, and removal of shortcodes within
  * the WordPress environment.
  *
- * @packageBdev
+ * @package   Bdev
  * @subpackage Shortcodes
  * @since 1.0.0
  * @version 1.0.0
@@ -48,18 +48,18 @@ class Shortcode_Manager {
 	 * @return void
 	 */
 	public function add_shortcode( Shortcode_Interface $shortcode ): void {
-		$this->add_callback( $shortcode->get_tag(), array( $shortcode, $shortcode->get_handler() ) );
+		$this->add_callback( $shortcode->get_tag(), $shortcode->get_handler() );
 	}
 
 	/**
 	 * Execute registered shortcodes.
 	 *
-	 * @param mixed ...$args Arguments to pass to do_shortcode.
+	 * @param Shortcode_Interface $shortcode The shortcode object implementing Shortcode_Interface.
 	 *
 	 * @return void
 	 */
-	public function execute( ...$args ): void {
-		do_shortcode( ...$args );
+	public function execute( Shortcode_Interface $shortcode ): void {
+		do_shortcode( $shortcode->get_tag() );
 	}
 
 	/**

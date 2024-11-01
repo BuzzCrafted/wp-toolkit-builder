@@ -2,15 +2,16 @@
 /**
  * File name: class-json-provider.php
  *
- * Provides functionality for theme, assets, and event management.
+ * Provides functionality for reading data from JSON files.
  *
- * @packageBdev
- * @subpackage Various
- * @since 1.0.0
- * @version 1.0.0
- * @license GPL-2.0-or-later
- * @link    https://buzzdeveloper.net
- * @author  BuzzDeveloper
+ * @package    Bdev
+ * @subpackage Provider
+ * @since      1.0.0
+ * @version    1.0.0
+ * @license    GPL-2.0-or-later
+ * @link       https://buzzdeveloper.net
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
+ * @copyright  2024
  */
 
 namespace Bdev\Provider;
@@ -54,7 +55,7 @@ class JSON_Provider implements Provider_Interface {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array Decoded content of the JSON file.
+	 * @return array<string, mixed> Decoded content of the JSON file.
 	 */
 	private function read_from_file(): array {
 		$content = array();
@@ -77,7 +78,7 @@ class JSON_Provider implements Provider_Interface {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array The JSON data as an associative array.
+	 * @return array<string, mixed> The JSON data as an associative array.
 	 */
 	public function get_data(): array {
 		return $this->read_from_file();

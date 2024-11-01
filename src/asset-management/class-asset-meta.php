@@ -4,13 +4,14 @@
  *
  * Provides functionality for theme, assets, and event management.
  *
- * @packageBdev
- * @subpackage Various
- * @since 1.0.0
- * @version 1.0.0
- * @license GPL-2.0-or-later
- * @link    https://buzzdeveloper.net
- * @author  BuzzDeveloper
+ * @package    Bdev
+ * @subpackage AssetManagement
+ * @since      1.0.0
+ * @version    1.0.0
+ * @license    GPL-2.0-or-later
+ * @link       https://buzzdeveloper.net
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
+ * @copyright  2024
  */
 
 namespace Bdev\AssetManagement;
@@ -51,17 +52,22 @@ class Asset_Meta {
 	 *
 	 * @since 1.0.0
 	 * @throws \RuntimeException If the file cannot be read.
-	 * @return array Associative array containing 'dependencies' and 'version'.
+	 * @return array<string, mixed> Associative array containing 'dependencies' and 'version'.
 	 */
 	public function get_assets(): array {
-		if ( ! is_readable( $this->file_path ) ) {
-			throw new \RuntimeException( \esc_html( sprintf( 'Asset metadata file %s is not readable.', $this->file_path ) ) );
-		}
+		$assets = array();
+		try {
+			if ( ! file_exists( $this->file_path ) || ! is_readable( $this->file_path ) ) {
+				throw new \RuntimeException( \esc_html( sprintf( 'Asset metadata file %s is not readable.', $this->file_path ) ) );
+			}
 
-		$assets = include $this->file_path;
+			$assets = (array) include $this->file_path;
 
-		if ( ! is_array( $assets ) || ! isset( $assets['dependencies'], $assets['version'] ) ) {
-			throw new \RuntimeException( \esc_html( sprintf( 'Asset metadata file %s is not valid.', $this->file_path ) ) );
+			if ( ! isset( $assets['dependencies'], $assets['version'] ) ) {
+				throw new \RuntimeException( \esc_html( sprintf( 'Asset metadata file %s is not valid.', $this->file_path ) ) );
+			}
+		} catch ( \Exception $e ) {
+			throw new \RuntimeException( \esc_html( $e->getMessage() ) );
 		}
 
 		return $assets;

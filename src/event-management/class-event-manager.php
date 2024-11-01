@@ -4,13 +4,14 @@
  *
  * Provides functionality for theme, assets, and event management.
  *
- * @packageBdev
+ * @package    Bdev
  * @subpackage Various
- * @since 1.0.0
- * @version 1.0.0
- * @license GPL-2.0-or-later
- * @link    https://buzzdeveloper.net
- * @author  BuzzDeveloper
+ * @since      1.0.0
+ * @version    1.0.0
+ * @license    GPL-2.0-or-later
+ * @link       https://buzzdeveloper.net
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
+ * @copyright  2024
  */
 
 namespace Bdev\EventManagement;
@@ -65,11 +66,12 @@ class Event_Manager {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param mixed ...$args Arguments to pass to the hook callbacks.
+	 * @param string $action The action hook name.
+	 * @param mixed  $args Arguments to pass to the hook callbacks.
 	 * @return void
 	 */
-	public function execute( ...$args ): void {
-		do_action( ...$args );
+	public function execute( string $action, $args ): void {
+		do_action( $action, $args );
 	}
 
 	/**
@@ -79,11 +81,12 @@ class Event_Manager {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param mixed ...$args Arguments to pass to the filter callbacks.
+	 * @param string $filter The filter hook name.
+	 * @param mixed  $args   Arguments to pass to the filter callbacks.
 	 * @return mixed Filtered value.
 	 */
-	public function filter( ...$args ) {
-		return apply_filters( ...$args );
+	public function filter( string $filter, $args ) {
+		return apply_filters( $filter, $args );
 	}
 
 	/**
@@ -111,7 +114,7 @@ class Event_Manager {
 	 * @param callable $callback  Optional. The callback function.
 	 * @return bool|int True if there are callbacks, priority of the callback, or false if not found.
 	 */
-	public function has_callback( string $hook_name, $callback = false ) {
+	public function has_callback( string $hook_name, $callback ) {
 		return has_filter( $hook_name, $callback );
 	}
 
@@ -157,9 +160,9 @@ class Event_Manager {
 	 */
 	private function add_subscriber_callback( Subscriber_Interface $subscriber, string $hook_name, $parameters ): void {
 		if ( is_string( $parameters ) ) {
-			$this->add_callback( $hook_name, array( $subscriber, $parameters ) );
+			$this->add_callback( $hook_name, $this->make_callable( array( $subscriber, $parameters ) ) );
 		} elseif ( is_array( $parameters ) && isset( $parameters[0] ) ) {
-			$this->add_callback( $hook_name, array( $subscriber, $parameters[0] ), $parameters[1] ?? 10, $parameters[2] ?? 1 );
+			$this->add_callback( $hook_name, $this->make_callable( array( $subscriber, $parameters[0] ) ), $parameters[1] ?? 10, $parameters[2] ?? 1 );
 		}
 	}
 
@@ -175,9 +178,24 @@ class Event_Manager {
 	 */
 	private function remove_subscriber_callback( Subscriber_Interface $subscriber, string $hook_name, $parameters ): void {
 		if ( is_string( $parameters ) ) {
-			$this->remove_callback( $hook_name, array( $subscriber, $parameters ) );
+			$this->remove_callback( $hook_name, $this->make_callable( array( $subscriber, $parameters ) ) );
 		} elseif ( is_array( $parameters ) && isset( $parameters[0] ) ) {
-			$this->remove_callback( $hook_name, array( $subscriber, $parameters[0] ), $parameters[1] ?? 10 );
+			$this->remove_callback( $hook_name, $this->make_callable( array( $subscriber, $parameters[0] ) ), $parameters[1] ?? 10 );
 		}
+	}
+
+	/**
+	 * Convert a mixed value to a callable.
+	 *
+	 * @param mixed $callback The callback to convert.
+	 * @return callable The converted callable.
+	 * @throws \InvalidArgumentException If the callback is not valid.
+	 */
+	private function make_callable( mixed $callback ): callable {
+		if ( is_callable( $callback ) ) {
+			return $callback;
+		}
+
+		throw new \InvalidArgumentException( 'Invalid callback provided.' );
 	}
 }

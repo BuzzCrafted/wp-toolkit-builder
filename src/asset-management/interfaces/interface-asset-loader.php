@@ -4,13 +4,14 @@
  *
  * Provides functionality for theme, assets, and event management.
  *
- * @packageBdev
- * @subpackage Various
- * @since 1.0.0
- * @version 1.0.0
- * @license GPL-2.0-or-later
- * @link    https://buzzdeveloper.net
- * @author  BuzzDeveloper
+ * @package    Bdev
+ * @subpackage AssetManagement
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
+ * @copyright  2024 BuzzDeveloper
+ * @since      1.0.0
+ * @version    1.0.0
+ * @license    GPL-2.0-or-later
+ * @link       https://buzzdeveloper.net
  */
 
 namespace Bdev\AssetManagement\Interfaces;

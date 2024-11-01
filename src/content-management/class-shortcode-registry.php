@@ -11,7 +11,7 @@
  * @version    1.0.0
  * @license    GPL-2.0-or-later
  * @link       https://buzzdeveloper.net
- * @author     BuzzDeveloper
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
  */
 
 namespace Bdev\ContentManagement;
@@ -46,8 +46,8 @@ class Shortcode_Registry {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array              $shortcodes Array of shortcodes to register.
-	 * @param Sanitized_Settings $settings   Sanitized settings instance for validation.
+	 * @param array<string, array<string, Shortcode_Interface>> $shortcodes Array of shortcodes to register.
+	 * @param Sanitized_Settings                                $settings   Sanitized settings instance for validation.
 	 * @return void
 	 */
 	public function register_shortcodes( array $shortcodes, Sanitized_Settings $settings ): void {
@@ -57,7 +57,8 @@ class Shortcode_Registry {
 					try {
 						$this->add_shortcode( $shortcode );
 					} catch ( \TypeError $th ) {
-						error_log( $th->getMessage() ); // Log error for debugging.
+						// TODO: implement error handling.
+						$error = $th->getMessage();
 					}
 				}
 			}

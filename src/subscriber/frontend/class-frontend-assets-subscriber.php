@@ -4,7 +4,7 @@
  *
  * Provides functionality for theme, assets, and event management.
  *
- * @packageBdev
+ * @package   Bdev
  * @subpackage Various
  * @since 1.0.0
  * @version 1.0.0
@@ -34,7 +34,7 @@ class Frontend_Assets_Subscriber extends Base_Assets_Subscriber {
 	 * the registration and enqueueing of frontend assets.
 	 *
 	 * @since 1.0.0
-	 * @return array Array of hooks and callback methods.
+	 * @return array<string, mixed> Array of hooks and callback methods.
 	 */
 	public static function get_subscribed_events(): array {
 		return array(

@@ -10,7 +10,7 @@
  * @version    1.0.0
  * @license    GPL-2.0-or-later
  * @link       https://buzzdeveloper.net
- * @author     BuzzDeveloper
+ * @author     BuzzDeveloper <dev@buzzdeveloper.net>
  */
 
 namespace Bdev\Validator\Interfaces;
@@ -31,9 +31,10 @@ interface Validator_Interface {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $name  The key to be validated.
-	 * @param mixed  $value The value associated with the key.
-	 * @return bool True if the key/value pair is valid, false otherwise.
+	 * @since 1.0.0
+	 * @param string $name  The name of the key being checked.
+	 * @param mixed  $value The value associated with the key being checked.
+	 * @return bool True if the key/value pair is allowed, false otherwise.
 	 */
 	public function is_allowed( string $name, mixed $value ): bool;
 }

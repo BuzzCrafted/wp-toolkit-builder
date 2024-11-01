@@ -4,13 +4,14 @@
  *
  * Provides functionality for theme, assets, and event management.
  *
- * @packageBdev
- * @subpackage Various
- * @since 1.0.0
- * @version 1.0.0
- * @license GPL-2.0-or-later
- * @link    https://buzzdeveloper.net
- * @author  BuzzDeveloper
+ * @package    Bdev
+ * @subpackage AssetManagement
+ * @since      1.0.0
+ * @version    1.0.0
+ * @license    GPL-2.0-or-later
+ * @link       https://buzzdeveloper.net
+ * @autor      BuzzDeveloper
+ * @copyright  2024
  */
 
 namespace Bdev\AssetManagement;
@@ -139,13 +140,20 @@ class Default_Asset_Loader implements Asset_Loader_Interface {
 					'version'      => $this->asset_version,
 				);
 			}
-			$assets['dependencies'] = array_merge( $assets['dependencies'], array( 'wp-api' ) );
+			$assets['dependencies'] = array_merge( (array) $assets['dependencies'], array( 'wp-api' ) );
+			// Ensure dependencies are strings.
+			$dependencies = array_map(
+				function ( $dep ) {
+					return is_scalar( $dep ) ? strval( $dep ) : '';
+				},
+				(array) $assets['dependencies']
+			);
 
 			wp_enqueue_script(
 				$this->asset_name,
 				$this->script_path->get_url( 'js', true ),
-				$assets['dependencies'],
-				$assets['version'],
+				$dependencies,
+				is_string( $assets['version'] ) ? $assets['version'] : $this->asset_version,
 				true
 			);
 
