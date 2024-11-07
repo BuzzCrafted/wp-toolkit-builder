@@ -28,7 +28,7 @@
     "scripts": {
         "test": "phpunit",
         "lint": "phpcs --standard=.phpcs.xml src/",
-        "analyse": "phpstan analyse src/",
+        "analyse": "phpstan analyse --memory-limit=512M src/",
         "post-install-cmd": [
             "cp -r 'hooks/' '.git/hooks/'",
             "php -r \"copy('hooks/pre-commit', '.git/hooks/pre-commit');\"",

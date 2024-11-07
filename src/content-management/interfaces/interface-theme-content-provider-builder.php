@@ -17,6 +17,7 @@
 namespace Bdev\ContentManagement\Interfaces;
 
 use Bdev\ContentManagement\Interfaces\Theme_Content_Configuration_Interface;
+use Bdev\ContentManagement\Theme_Content_Provider;
 
 interface Theme_Content_Provider_Builder_Interface {
 	/**
