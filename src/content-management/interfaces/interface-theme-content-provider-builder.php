@@ -14,7 +14,7 @@
  * @copyright  2024
  */
 
-namespace Bdev\ContentManagement;
+namespace Bdev\ContentManagement\Interfaces;
 
 use Bdev\ContentManagement\Interfaces\Theme_Content_Configuration_Interface;
 

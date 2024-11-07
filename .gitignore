@@ -2,4 +2,3 @@ vendor
 node_modules
 *.lock
 *.cache
-chore(ci, hooks): add Travis CI configuration and pre-push hook
