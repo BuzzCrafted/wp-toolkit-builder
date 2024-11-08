@@ -48,15 +48,4 @@ interface Theme_Content_Configuration_Interface {
 	 * @return array<string, array<string, Shortcode_Interface>> Array of shortcode configurations.
 	 */
 	public function get_shortcode_config(): array;
-
-	/**
-	 * Retrieve an array of theme settings.
-	 *
-	 * Implementations should return all theme settings
-	 * associated with the theme.
-	 *
-	 * @since 1.0.0
-	 * @return array<string, mixed> Array of theme settings.
-	 */
-	public function get_theme_settings(): array;
 }
