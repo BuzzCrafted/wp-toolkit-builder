@@ -69,7 +69,7 @@ class Subscriber_Registry {
 	 * @return void
 	 */
 	private function register_default_subscribers( Settings_Interface $settings ): void {
-		$this->subscribers = array(
+		$default_subscribers = array(
 			new Frontend_Assets_Subscriber(
 				new Default_Asset_Loader(
 					new Asset_Path( 'theme-style', 'assets', get_stylesheet_directory(), get_stylesheet_directory_uri() ),
@@ -91,6 +91,8 @@ class Subscriber_Registry {
 				)
 			),
 		);
+
+		$this->subscribers = array_merge( $this->subscribers, $default_subscribers );
 	}
 
 	/**

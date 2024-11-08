@@ -116,7 +116,7 @@ class Simple_Settings implements Settings_Interface {
 	 * @return array<string, mixed> Associative array of settings.
 	 */
 	public function get_settings(): array {
-		return isset( $this->data_storage['settings'] ) && is_array( $this->data_storage['settings'] ) ? $this->data_storage['settings'] : array();
+		return $this->data_storage;
 	}
 
 	/**
