@@ -74,25 +74,16 @@ class Theme_Content_Provider implements Content_Data_Interface {
 	private array $theme_shortcodes = array();
 
 	/**
-	 * Default settings for the theme configuration.
-	 *
-	 * @var array<string, mixed>
-	 */
-	private array $default_settings = array();
-
-	/**
 	 * Constructor
 	 *
 	 * Initializes the registries with given subscribers, shortcodes, and default settings.
 	 *
 	 * @param array<string, array<string, Subscriber_Interface>> $theme_subscribers List of theme subscribers.
 	 * @param array<string, array<string, Shortcode_Interface>>  $theme_shortcodes  List of theme shortcodes.
-	 * @param array<string, mixed>                               $default_settings  Default settings for theme configuration.
 	 */
-	public function __construct( array $theme_subscribers, array $theme_shortcodes, array $default_settings ) {
+	public function __construct( array $theme_subscribers, array $theme_shortcodes ) {
 		$this->theme_subscribers   = $theme_subscribers;
 		$this->theme_shortcodes    = $theme_shortcodes;
-		$this->default_settings    = $default_settings;
 		$this->subscriber_registry = new Subscriber_Registry();
 		$this->shortcode_registry  = new Shortcode_Registry();
 	}
@@ -109,14 +100,7 @@ class Theme_Content_Provider implements Content_Data_Interface {
 		$theme_settings_manager = new Theme_Settings_Manager();
 		$file_path              = $this->get_file_path_from_theme( self::CONFIG_NAME );
 
-		$ruleset = array(
-			'version',
-			'name',
-			'slug',
-			'settings' => $this->default_settings,
-		);
-
-		$settings = $theme_settings_manager->load_settings( $file_path, $ruleset );
+		$settings = $theme_settings_manager->load_settings( $file_path );
 		$this->subscriber_registry->register_subscribers( $this->theme_subscribers, $settings );
 		$this->shortcode_registry->register_shortcodes( $this->theme_shortcodes, $settings );
 

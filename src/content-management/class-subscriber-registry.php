@@ -19,7 +19,7 @@ use Bdev\AssetManagement\Asset_Path;
 use Bdev\AssetManagement\Default_Asset_Loader;
 use Bdev\AssetManagement\Subscriber\Admin\Admin_Assets_Subscriber;
 use Bdev\EventManagement\Interfaces\Subscriber_Interface;
-use Bdev\Settings\Sanitized_Settings;
+use Bdev\Settings\Interfaces\Settings_Interface;
 use Bdev\Subscriber\Frontend\Frontend_Assets_Subscriber;
 
 /**
@@ -38,14 +38,15 @@ class Subscriber_Registry {
 	 */
 	private array $subscribers = array();
 
+
 	/**
-	 * Registers subscribers based on provided settings.
+	 * Registers subscribers based on settings.
 	 *
-	 * @param array<string, array<string, Subscriber_Interface>> $subscribers Associative array of subscriber settings.
-	 * @param Sanitized_Settings                                 $settings    The sanitized settings instance.
+	 * @param array<string, array<string, Subscriber_Interface>> $subscribers Array of subscribers to register.
+	 * @param Settings_Interface                                 $settings The settings instance.
 	 * @return void
 	 */
-	public function register_subscribers( array $subscribers, Sanitized_Settings $settings ): void {
+	public function register_subscribers( array $subscribers, Settings_Interface $settings ): void {
 		foreach ( $subscribers as $setting => $options ) {
 			foreach ( $options as $option => $subscriber ) {
 				if ( $settings->has_support( $setting, $option ) ) {
@@ -64,10 +65,10 @@ class Subscriber_Registry {
 	/**
 	 * Registers default subscribers for frontend and admin assets.
 	 *
-	 * @param Sanitized_Settings $settings The sanitized settings instance.
+	 * @param Settings_Interface $settings The sanitized settings instance.
 	 * @return void
 	 */
-	private function register_default_subscribers( Sanitized_Settings $settings ): void {
+	private function register_default_subscribers( Settings_Interface $settings ): void {
 		$this->subscribers = array(
 			new Frontend_Assets_Subscriber(
 				new Default_Asset_Loader(

@@ -15,9 +15,9 @@
 
 namespace Bdev\ContentManagement;
 
-use Bdev\Settings\Sanitized_Settings;
+use Bdev\Settings\Simple_Settings;
 use Bdev\Provider\JSON_Provider;
-use Bdev\Validator\Settings_Validator;
+use Bdev\Settings\Interfaces\Settings_Interface;
 
 /**
  * Class Theme_Settings_Manager
@@ -31,14 +31,12 @@ class Theme_Settings_Manager {
 	/**
 	 * Load and validate theme settings.
 	 *
-	 * @param string                                         $file_path Path to the JSON configuration file.
-	 * @param array<int|string, array<string, mixed>|string> $ruleset   Validation ruleset for the settings.
-	 * @return Sanitized_Settings The sanitized settings instance.
+	 * @param string $file_path Path to the JSON configuration file.
+	 * @return Settings_Interface The sanitized settings instance.
 	 */
-	public function load_settings( string $file_path, array $ruleset ): Sanitized_Settings {
-		return new Sanitized_Settings(
-			new JSON_Provider( $file_path ),
-			new Settings_Validator( $ruleset )
+	public function load_settings( string $file_path ): Settings_Interface {
+		return new Simple_Settings(
+			new JSON_Provider( $file_path )
 		);
 	}
 }

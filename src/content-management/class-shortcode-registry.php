@@ -16,6 +16,7 @@
 
 namespace Bdev\ContentManagement;
 
+use Bdev\Settings\Interfaces\Settings_Interface;
 use Bdev\Settings\Sanitized_Settings;
 use Bdev\Shortcodes\Interfaces\Shortcode_Interface;
 
@@ -38,19 +39,19 @@ class Shortcode_Registry {
 	 */
 	private array $shortcodes = array();
 
+
 	/**
-	 * Register shortcodes based on theme settings.
+	 * Register shortcodes.
 	 *
-	 * Registers shortcodes defined by the provided settings. Only registers
-	 * shortcodes if the corresponding setting and option are supported.
+	 * Registers an array of shortcodes based on the provided settings.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param array<string, array<string, Shortcode_Interface>> $shortcodes Array of shortcodes to register.
-	 * @param Sanitized_Settings                                $settings   Sanitized settings instance for validation.
+	 * @param Settings_Interface                                $settings Settings interface to check support for shortcodes.
 	 * @return void
 	 */
-	public function register_shortcodes( array $shortcodes, Sanitized_Settings $settings ): void {
+	public function register_shortcodes( array $shortcodes, Settings_Interface $settings ): void {
 		foreach ( $shortcodes as $setting => $options ) {
 			foreach ( $options as $option => $shortcode ) {
 				if ( $settings->has_support( $setting, $option ) ) {
