@@ -71,8 +71,8 @@ class Subscriber_Registry {
 		$this->subscribers = array(
 			new Frontend_Assets_Subscriber(
 				new Default_Asset_Loader(
-					new Asset_Path( 'bundle-style', 'assets', get_stylesheet_directory(), get_stylesheet_uri() ),
-					new Asset_Path( 'bundle', 'assets', get_stylesheet_directory(), get_stylesheet_uri() ),
+					new Asset_Path( 'theme-style', 'assets', get_stylesheet_directory(), get_stylesheet_uri() ),
+					new Asset_Path( 'theme', 'assets', get_stylesheet_directory(), get_stylesheet_uri() ),
 					$settings->get_property( 'slug' ) . '-bundle',
 					$settings->get_property( 'version' ),
 					trailingslashit( get_stylesheet_directory() ) . 'language',
