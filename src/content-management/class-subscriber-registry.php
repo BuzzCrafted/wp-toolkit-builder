@@ -6,11 +6,11 @@
  *
  * @package   Bdev
  * @subpackage ContentManagement
- * @since 1.0.0
- * @version 1.0.0
- * @license GPL-2.0-or-later
- * @author  BuzzDeveloper
- * @link    https://buzzdeveloper.net
+ * @since      1.0.0
+ * @version    1.0.0
+ * @license    GPL-2.0-or-later
+ * @author     BuzzDeveloper
+ * @link       https://buzzdeveloper.net
  */
 
 namespace Bdev\ContentManagement;
@@ -71,8 +71,8 @@ class Subscriber_Registry {
 		$this->subscribers = array(
 			new Frontend_Assets_Subscriber(
 				new Default_Asset_Loader(
-					new Asset_Path( 'theme-style', 'assets', get_stylesheet_directory(), get_stylesheet_uri() ),
-					new Asset_Path( 'theme', 'assets', get_stylesheet_directory(), get_stylesheet_uri() ),
+					new Asset_Path( 'theme-style', 'assets', get_stylesheet_directory(), get_stylesheet_directory_uri() ),
+					new Asset_Path( 'theme', 'assets', get_stylesheet_directory(), get_stylesheet_directory_uri() ),
 					$settings->get_property( 'slug' ) . '-bundle',
 					$settings->get_property( 'version' ),
 					trailingslashit( get_stylesheet_directory() ) . 'language',
