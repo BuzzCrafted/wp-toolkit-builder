@@ -1,9 +1,9 @@
 <?php
 /**
- * Theme Updater Subscriber class.
+ * Base class for updater subscribers.
  *
  * @package   Bdev
- * @subpackage Various
+ * @subpackage Subscriber
  * @since 1.0.1
  * @version 1.0.0
  * @license GPL-2.0-or-later
@@ -16,15 +16,15 @@ namespace Bdev\Subscriber;
 use Bdev\EventManagement\Interfaces\Subscriber_Interface;
 use Bdev\Updater\Interfaces\Updater_Interface;
 
+
 /**
- * Class Theme_Updater_Subscriber
+ * Abstract class Base_Updater_Subscriber.
  *
- * This class subscribes to theme update events and manages theme updates.
+ * This class provides the base functionality for updater subscribers.
  *
- * @package Bdev\Subscriber
- * @since 1.0.0
+ * @since 1.0.1
  */
-class Theme_Updater_Subscriber implements Subscriber_Interface {
+abstract class Base_Updater_Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Updater instance.
@@ -40,21 +40,6 @@ class Theme_Updater_Subscriber implements Subscriber_Interface {
 	 */
 	public function __construct( Updater_Interface $updater ) {
 		$this->updater = $updater;
-	}
-
-	/**
-	 * Get the list of subscribed events.
-	 *
-	 * Returns an array of WordPress hooks and corresponding methods to manage
-	 * the registration and enqueueing of frontend assets.
-	 *
-	 * @since 1.0.0
-	 * @return array<string, mixed> Array of hooks and callback methods.
-	 */
-	public static function get_subscribed_events(): array {
-		return array(
-			'pre_set_site_transient_update_themes' => 'manage_updates',
-		);
 	}
 
 	/**
