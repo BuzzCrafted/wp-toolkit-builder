@@ -59,7 +59,7 @@ class Updater implements Updater_Interface {
 	 *
 	 * @param Update_Info_Interface $update_info Update info instance.
 	 */
-	public function set_update_info( Update_Info_Interface $update_info ): void {
+	public function set_update_info_provider( Update_Info_Interface $update_info ): void {
 		$this->update_info = $update_info;
 	}
 
@@ -68,7 +68,7 @@ class Updater implements Updater_Interface {
 	 *
 	 * @return Update_Info_Interface Update info instance.
 	 */
-	public function get_update_info(): Update_Info_Interface {
+	public function get_update_info_provider(): Update_Info_Interface {
 		return $this->update_info;
 	}
 
@@ -102,10 +102,10 @@ class Updater implements Updater_Interface {
 			if ( ! isset( $transient->response ) ) {
 				$transient->response = array();
 			}
-			$transient->response[ $this->get_update_info()->get_update_id() ] = $update;
+			$transient->response[ $this->get_update_info_provider()->get_update_id() ] = $update;
 		} else {
-			$item = (object) $this->get_update_info()->get_no_update_info();
-			$transient->no_update[ $this->get_update_info()->get_update_id() ] = $item;
+			$item = (object) $this->get_update_info_provider()->get_no_update_info();
+			$transient->no_update[ $this->get_update_info_provider()->get_update_id() ] = $item;
 		}
 		return $transient;
 	}
@@ -117,9 +117,10 @@ class Updater implements Updater_Interface {
 	 */
 	protected function check_for_updates(): array {
 		$update_info = array();
-		$update_data = $this->get_update_info()->get_update_info();
-		if ( ! empty( $update_data['version'] ) && version_compare( (string) $update_data['version'], $this->get_version(), '>' ) ) {
-			$update_info = $this->get_update_info()->get_update_info();
+		$update_data = $this->get_update_info_provider()->get_update_info();
+		$new_version = $update_data['new_version'] ?? '';
+		if ( version_compare( (string) $new_version, $this->get_version(), '>' ) ) {
+			$update_info = $this->get_update_info_provider()->get_update_info();
 		}
 
 		return $update_info;

@@ -26,12 +26,23 @@ abstract class Update_Info implements Update_Info_Interface {
 	 * @var array<string, mixed> $update_info
 	 */
 	protected array $update_info;
+
 	/**
 	 * Data provider instance
 	 *
 	 * @var Provider_Interface
 	 */
 	protected Provider_Interface $data_provider;
+
+	/**
+	 * Constructor for the Update_Info class.
+	 *
+	 * @param Provider_Interface $data_provider Data provider instance.
+	 */
+	public function __construct( Provider_Interface $data_provider ) {
+		$this->data_provider = $data_provider;
+		$this->update_info   = $this->data_provider->get_data();
+	}
 
 	/**
 	 * Get update information.
