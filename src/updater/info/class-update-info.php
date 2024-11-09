@@ -14,11 +14,12 @@
 namespace Bdev\Updater\Info;
 
 use Bdev\Provider\Interfaces\Provider_Interface;
+use Bdev\UpdateManagement\Interfaces\Update_Info_Interface;
 
 /**
  * Abstract class representing update information.
  */
-abstract class Update_Info {
+abstract class Update_Info implements Update_Info_Interface {
 	/**
 	 *  An associative array where the key is a string and the value can be of any type.
 	 *
@@ -38,6 +39,13 @@ abstract class Update_Info {
 	 * @return array<string, mixed> An array containing the update information.
 	 */
 	abstract public function get_update_info(): array;
+
+	/**
+	 * Get information when there is no update.
+	 *
+	 * @return array<string, mixed> An array containing the no update information.
+	 */
+	abstract public function get_no_update_info(): array;
 
 	/**
 	 * Get the update ID.
