@@ -1,6 +1,6 @@
 {
     "name": "bdev/wp-toolkit-builder",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Wordpress toolkit classes library",
     "type": "library",
     "license": "gpl-2.0-or-later",
