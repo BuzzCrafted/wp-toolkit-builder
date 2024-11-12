@@ -2,7 +2,7 @@
 /**
  * This file contains the Update_Info abstract class which represents update information.
  *
- * @package Bdev
+ * @package    Bdev
  * @subpackage Updater
  * @since      1.0.1
  * @version    1.0.0
@@ -14,7 +14,7 @@
 namespace Bdev\Updater\Info;
 
 use Bdev\Provider\Interfaces\Provider_Interface;
-use Bdev\UpdateManagement\Interfaces\Update_Info_Interface;
+use Bdev\Updater\Interfaces\Update_Info_Interface;
 
 /**
  * Abstract class representing update information.

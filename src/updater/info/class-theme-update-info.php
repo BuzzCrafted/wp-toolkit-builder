@@ -29,7 +29,7 @@ class Theme_Update_Info extends Update_Info {
 		return array(
 			'theme'        => $this->update_info['name'] ?? '',
 			'new_version'  => $this->update_info['version'] ?? '',
-			'version'      => $theme ? $theme->get( 'Version' ) : '',
+			'version'      => $theme->get( 'Version' ),
 			'url'          => $this->update_info['url'] ?? '',
 			'package'      => $this->update_info['package'] ?? '',
 			'requires'     => $this->update_info['requires'] ?? '',

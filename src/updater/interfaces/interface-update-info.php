@@ -5,7 +5,7 @@
  * Provides an interface for retrieving update information.
  *
  * @package    Bdev
- * @subpackage UpdateManagement
+ * @subpackage Updater
  * @since      1.0.1
  * @version    1.0.0
  * @license    GPL-2.0-or-later
@@ -13,7 +13,7 @@
  * @author     BuzzDeveloper
  */
 
-namespace Bdev\UpdateManagement\Interfaces;
+namespace Bdev\Updater\Interfaces;
 
 /**
  * Interface Update_Info_Interface
