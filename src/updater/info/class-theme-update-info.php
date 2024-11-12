@@ -25,9 +25,11 @@ class Theme_Update_Info extends Update_Info {
 	 * @return array<string, mixed> An array containing the update information.
 	 */
 	public function get_update_info(): array {
+		$theme = wp_get_theme();
 		return array(
 			'theme'        => $this->update_info['name'] ?? '',
 			'new_version'  => $this->update_info['version'] ?? '',
+			'version'      => $theme ? $theme->get( 'Version' ) : '',
 			'url'          => $this->update_info['url'] ?? '',
 			'package'      => $this->update_info['package'] ?? '',
 			'requires'     => $this->update_info['requires'] ?? '',
