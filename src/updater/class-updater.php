@@ -15,6 +15,7 @@
 
 namespace Bdev\Updater;
 
+use Bdev\Cache\Interfaces\Cache_Interface;
 use Bdev\Updater\Interfaces\Update_Info_Interface;
 use Bdev\Settings\Interfaces\WP_Info_Interface;
 use Bdev\Updater\Interfaces\Updater_Interface;
@@ -42,16 +43,25 @@ class Updater implements Updater_Interface {
 	private WP_Info_Interface $wp_info;
 
 	/**
+	 * Cache instance.
+	 *
+	 * @var Cache_Interface
+	 */
+	private Cache_Interface $cache;
+
+	/**
 	 * Updater constructor.
 	 *
-	 * Initializes the Updater with the provided data provider and update info instances.
+	 * Initializes the Updater with the provided data provider, update info, and cache instances.
 	 *
 	 * @param Update_Info_Interface $update_info Update info instance.
 	 * @param WP_Info_Interface     $wp_info WordPress info instance.
+	 * @param Cache_Interface       $cache Cache instance.
 	 */
-	public function __construct( Update_Info_Interface $update_info, WP_Info_Interface $wp_info ) {
+	public function __construct( Update_Info_Interface $update_info, WP_Info_Interface $wp_info, Cache_Interface $cache ) {
 		$this->update_info = $update_info;
 		$this->wp_info     = $wp_info;
+		$this->cache       = $cache;
 	}
 
 	/**
@@ -91,6 +101,24 @@ class Updater implements Updater_Interface {
 	}
 
 	/**
+	 * Sets the cache instance.
+	 *
+	 * @param Cache_Interface $cache Cache instance.
+	 */
+	public function set_cache_provider( Cache_Interface $cache ): void {
+		$this->cache = $cache;
+	}
+
+	/**
+	 * Gets the cache instance.
+	 *
+	 * @return Cache_Interface Cache instance.
+	 */
+	public function get_cache_provider(): Cache_Interface {
+		return $this->cache;
+	}
+
+	/**
 	 * Prepares the update.
 	 *
 	 * @param \stdClass $transient The transient object containing update information.
@@ -117,7 +145,13 @@ class Updater implements Updater_Interface {
 	 */
 	protected function check_for_updates(): array {
 		$update_info = array();
-		$update_data = $this->get_update_info_provider()->get_update_info();
+		$cache_key   = $this->get_update_info_provider()->get_update_id() . $this->get_wp_info_provider()->get_version();
+		if ( $this->get_cache_provider()->is_cached( $cache_key ) ) {
+			$update_data = $this->get_cache_provider()->retrieve( $cache_key );
+		} else {
+			$update_data = $this->get_update_info_provider()->get_update_info();
+			$this->get_cache_provider()->store( $cache_key, $update_data, HOUR_IN_SECONDS );
+		}
 
 		if ( version_compare( (string) $update_data['new_version'], $this->get_wp_info_provider()->get_version(), '>' )
 		&& version_compare( $update_data['requires'] ?? '', $this->get_wp_info_provider()->get_requires(), '<' )
